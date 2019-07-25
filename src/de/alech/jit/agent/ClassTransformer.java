@@ -64,6 +64,10 @@ public class ClassTransformer implements ClassFileTransformer {
                         System.out.println("[Agent] adding code before " + h.method);
                         m.insertBefore(h.codePatch);
                     }
+                    if (h.where == WhereToPatch.INSERTAFTER) {
+                        System.out.println("[Agent] adding code 'after' " + h.method);
+                        m.insertAfter(h.codePatch);
+                    }
                 }
                 byteCode = cc.toBytecode();
                 cc.detach();
