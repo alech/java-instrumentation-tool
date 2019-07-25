@@ -6,14 +6,14 @@ public class DynamicInstrumentationMain {
     public static void main(String[] args) {
         try {
             if (args.length != 1) {
-                System.err.println("Usage: java -jar agent.jar PID");
-                // TODO document static agent (-javaagent) usage
+                System.err.println("Usage:\n    java [-Dagentargs=showloadedclasses] -jar agent.jar PID");
+                System.err.println("Alternatively, hook at startup with\n    java -javaagent:agent.jar[=showloadedclasses] yourjar.jar");
                 System.exit(1);
             }
             int pid = Integer.parseInt(args[0]);
-            System.out.println(pid);
             VirtualMachine jvm = VirtualMachine.attach(args[0]);
-            jvm.loadAgent(System.getProperty("user.dir") + "/agent.jar");
+            String agentArgs = System.getProperty("agentargs");
+            jvm.loadAgent(System.getProperty("user.dir") + "/agent.jar", agentArgs);
             jvm.detach();
         }
         catch (Exception e) {

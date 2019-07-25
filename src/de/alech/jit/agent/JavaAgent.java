@@ -19,13 +19,16 @@ public class JavaAgent {
     }
 
     private static void readHooksAndTransform(String agentArgs, Instrumentation inst) {
-        // TODO maybe add an option to show this somehow?
-        /*
-        System.out.println("[Agent] loaded classes:");
-        for (Class<?> clazz: inst.getAllLoadedClasses()) {
-            System.out.println("[Agent]   - " + clazz.getName());
+        if (agentArgs == null) {
+            agentArgs = System.getProperty("agentargs");
         }
-        */
+        if ((agentArgs != null) && agentArgs.equals("showloadedclasses")) {
+            System.out.println("[Agent] loaded classes:");
+            for (Class<?> clazz : inst.getAllLoadedClasses()) {
+                System.out.println("[Agent]   - " + clazz.getName());
+            }
+        }
+
         // a map to map class name to a list of hooks that will be applied to it
         Map<String, LinkedList<Hook>> hooksByClass = new HashMap();
         try {
