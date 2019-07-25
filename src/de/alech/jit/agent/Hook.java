@@ -2,8 +2,12 @@ package de.alech.jit.agent;
 
 import java.io.*;
 
+/*
+The location where to patch, corresponding to the CtBehavior.insertBefore() and CtBehavior.insertAfter() methods.
+ */
 enum WhereToPatch {
     INSERTBEFORE,
+    INSERTAFTER
 }
 
 public class Hook {
