@@ -64,7 +64,6 @@ public class BuilderMain {
                         break;
                     String name = e.getName();
                     if (name.startsWith("javassist/")) {
-                        System.out.println("Processing " + name);
                         jos.putNextEntry(new JarEntry(name));
                         writeInputStreamToOutputStream(inputJar, jos);
                     }
