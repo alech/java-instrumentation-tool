@@ -43,15 +43,15 @@ public class ClassTransformer implements ClassFileTransformer {
 
         if (loader == null || loader.equals(targetClassLoader)) {
             // modify the class by adding all the hooks in the corresponding places
-            for (Hook h : this.hooks) {
-                System.out.println("[Agent] Transforming class " + this.targetClassName + ", method " + h.method + ", param types " + String.join(";", h.strParams));
-                params = strParamsToCtClassParams(h.strParams);
-                try {
-                    ClassPool cp = ClassPool.getDefault();
-                    cp.insertClassPath(new ClassClassPath(this.getClass()));
-                    CtClass cc = cp.get(targetClassName);
-                    String shortClassName = targetClassName.substring(targetClassName.lastIndexOf(".") + 1);
-                    CtBehavior m;
+            try {
+                ClassPool cp = ClassPool.getDefault();
+                cp.insertClassPath(new ClassClassPath(this.getClass()));
+                CtClass cc = cp.get(targetClassName);
+                String shortClassName = targetClassName.substring(targetClassName.lastIndexOf(".") + 1);
+                CtBehavior m;
+                for (Hook h : this.hooks) {
+                    System.out.println("[Agent] Transforming class " + this.targetClassName + ", method " + h.method + ", param types " + String.join(";", h.strParams));
+                    params = strParamsToCtClassParams(h.strParams);
                     if (shortClassName.equals(h.method)) {
                         m = cc.getDeclaredConstructor(params);
                     } else {
@@ -64,11 +64,11 @@ public class ClassTransformer implements ClassFileTransformer {
                         System.out.println("[Agent] adding code before " + h.method);
                         m.insertBefore(h.codePatch);
                     }
-                    byteCode = cc.toBytecode();
-                    cc.detach();
-                } catch (Exception e) {
-                    System.err.println("[Agent] error while transforming: " + e);
                 }
+                byteCode = cc.toBytecode();
+                cc.detach();
+            } catch (Exception e) {
+                System.err.println("[Agent] error while transforming: " + e);
             }
         }
         return byteCode;
