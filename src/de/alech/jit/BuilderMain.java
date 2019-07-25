@@ -21,13 +21,6 @@ public class BuilderMain {
             "Can-Redefine-Classes: true\n" +
             "Can-Retransform-Classes: true\n" +
             "Main-Class: de.alech.jit.agent.DynamicInstrumentationMain\n";
-    // list of classes to be included in the agent.jar
-    private static String[] agentClasses = {
-            "de.alech.jit.agent.ClassTransformer",
-            "de.alech.jit.agent.DynamicInstrumentationMain",
-            "de.alech.jit.agent.Hook",
-            "de.alech.jit.agent.WhereToPatch",
-            "de.alech.jit.agent.JavaAgent" };
 
     // Build an agent jar file based on the hooks definition file given on the command line.
     public static void main(String[] args) {
@@ -46,14 +39,7 @@ public class BuilderMain {
             Manifest mf = new Manifest(new ByteArrayInputStream(manifestData.getBytes(Charset.forName("US-ASCII"))));
             JarOutputStream jos = new JarOutputStream(new FileOutputStream(outputFilename), mf);
 
-            // add required classes to JAR file
-            for (String ac : BuilderMain.agentClasses) {
-                InputStream acStream = BuilderMain.class.getResourceAsStream(classNameToFilename(ac, true));
-                jos.putNextEntry(new JarEntry(classNameToFilename(ac, false)));
-                writeInputStreamToOutputStream(acStream, jos);
-            }
-
-            // add javassist classes to JAR file
+            // add all our classes to agent JAR file
             CodeSource src = BuilderMain.class.getProtectionDomain().getCodeSource();
             if (src != null) {
                 URL jar = src.getLocation();
@@ -63,7 +49,7 @@ public class BuilderMain {
                     if (e == null)
                         break;
                     String name = e.getName();
-                    if (name.startsWith("javassist/")) {
+                    if (! name.equals("META-INF/MANIFEST.MF")) {
                         jos.putNextEntry(new JarEntry(name));
                         writeInputStreamToOutputStream(inputJar, jos);
                     }

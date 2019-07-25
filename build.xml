@@ -21,6 +21,7 @@
 		<mkdir dir="build/jar"/>
 		<jar destfile="build/jar/java-instrumentation-tool.jar" basedir="build/classes" filesetmanifest="skip">
 			<zipfileset src="lib/javassist.jar"/>
+            <zipfileset src="${java.home}/../lib/tools.jar"/>
 			<manifest>
 				<attribute name="Main-class" value="de.alech.jit.BuilderMain"/>
 			</manifest>
