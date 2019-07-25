@@ -11,6 +11,14 @@ import java.util.Map;
 
 public class JavaAgent {
     public static void agentmain(String agentArgs, Instrumentation inst) {
+        readHooksAndTransform(agentArgs, inst);
+    }
+
+    public static void premain(String agentArgs, Instrumentation inst) {
+        readHooksAndTransform(agentArgs, inst);
+    }
+
+    private static void readHooksAndTransform(String agentArgs, Instrumentation inst) {
         // TODO maybe add an option to show this somehow?
         /*
         System.out.println("[Agent] loaded classes:");
@@ -39,6 +47,7 @@ public class JavaAgent {
             transformClass(classToTransform, hooks, inst);
         }
     }
+
     private static void transformClass(
             String className,
             LinkedList<Hook> hooks,
