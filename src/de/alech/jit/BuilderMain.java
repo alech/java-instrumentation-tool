@@ -79,7 +79,11 @@ public class BuilderMain {
             BufferedReader hookReader = new BufferedReader(new InputStreamReader(new FileInputStream(hooksFile)));
             while (hookReader.ready()) {
                 String line = hookReader.readLine();
-                Hook hook = new Hook(line, hooksFile.getParent());
+                String hooksBaseDir = hooksFile.getParent();
+                if (hooksBaseDir == null) {
+                    hooksBaseDir = "./";
+                }
+                Hook hook = new Hook(line, hooksBaseDir);
                 jos.putNextEntry(new JarEntry("hooks/" + hook.codeFileName));
                 writeInputStreamToOutputStream(new ByteArrayInputStream(hook.codePatch.getBytes("UTF-8")), jos);
             }
