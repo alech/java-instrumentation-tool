@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="java-instrumentation-tool" default="all">
+  
+  
+  <property file="build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.swc"/>
+    <include name="*.zip"/>
+    <include name="*.egg"/>
+    <include name="*.ane"/>
+    <include name="*.jar"/>
+    <include name="*.ear"/>
+    <include name="*.klib"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8.0_212" value="${jdk.home.1.8.0_212}/lib/openjdk/bin"/>
+  <path id="jdk.classpath.1.8.0_212">
+    <fileset dir="${jdk.home.1.8.0_212}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="lib/openjdk/lib/tools.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8.0_212}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8.0_212}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8.0_212"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.javassist.classpath">
+    <pathelement location="${basedir}/lib/javassist.jar"/>
+  </path>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module java-instrumentation-tool -->
+  
+  <dirname property="module.java-instrumentation-tool.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.java-instrumentation-tool" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.java-instrumentation-tool" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.java-instrumentation-tool" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.java-instrumentation-tool" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="java-instrumentation-tool.output.dir" value="${module.java-instrumentation-tool.basedir}/out/production/java-instrumentation-tool"/>
+  <property name="java-instrumentation-tool.testoutput.dir" value="${module.java-instrumentation-tool.basedir}/out/test/java-instrumentation-tool"/>
+  
+  <path id="java-instrumentation-tool.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="java-instrumentation-tool.module.production.classpath">
+    <path refid="${module.jdk.classpath.java-instrumentation-tool}"/>
+    <path refid="library.javassist.classpath"/>
+  </path>
+  
+  <path id="java-instrumentation-tool.runtime.production.module.classpath">
+    <pathelement location="${java-instrumentation-tool.output.dir}"/>
+    <path refid="library.javassist.classpath"/>
+  </path>
+  
+  <path id="java-instrumentation-tool.module.classpath">
+    <path refid="${module.jdk.classpath.java-instrumentation-tool}"/>
+    <pathelement location="${java-instrumentation-tool.output.dir}"/>
+    <path refid="library.javassist.classpath"/>
+  </path>
+  
+  <path id="java-instrumentation-tool.runtime.module.classpath">
+    <pathelement location="${java-instrumentation-tool.testoutput.dir}"/>
+    <pathelement location="${java-instrumentation-tool.output.dir}"/>
+    <path refid="library.javassist.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.java-instrumentation-tool">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.java-instrumentation-tool">
+    <patternset refid="excluded.from.module.java-instrumentation-tool"/>
+  </patternset>
+  
+  <path id="java-instrumentation-tool.module.sourcepath">
+    <dirset dir="${module.java-instrumentation-tool.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.java-instrumentation-tool" depends="compile.module.java-instrumentation-tool.production,compile.module.java-instrumentation-tool.tests" description="Compile module java-instrumentation-tool"/>
+  
+  <target name="compile.module.java-instrumentation-tool.production" description="Compile module java-instrumentation-tool; production classes">
+    <mkdir dir="${java-instrumentation-tool.output.dir}"/>
+    <javac destdir="${java-instrumentation-tool.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.java-instrumentation-tool}/javac">
+      <compilerarg line="${compiler.args.java-instrumentation-tool}"/>
+      <bootclasspath refid="java-instrumentation-tool.module.bootclasspath"/>
+      <classpath refid="java-instrumentation-tool.module.production.classpath"/>
+      <src refid="java-instrumentation-tool.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.java-instrumentation-tool"/>
+    </javac>
+    
+    <copy todir="${java-instrumentation-tool.output.dir}">
+      <fileset dir="${module.java-instrumentation-tool.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.java-instrumentation-tool.tests" depends="compile.module.java-instrumentation-tool.production" description="compile module java-instrumentation-tool; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.java-instrumentation-tool" description="cleanup module">
+    <delete dir="${java-instrumentation-tool.output.dir}"/>
+    <delete dir="${java-instrumentation-tool.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.java-instrumentation-tool" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.java-instrumentation-tool" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.java-instrumentation-tool:jar" value="${basedir}/out/artifacts/java_instrumentation_tool_jar"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.java-instrumentation-tool.jar" value="${artifacts.temp.dir}/java-instrumentation-tool.jar"/>
+  </target>
+  
+  <target name="artifact.java-instrumentation-tool:jar" depends="init.artifacts, compile.module.java-instrumentation-tool" description="Build &#39;java-instrumentation-tool:jar&#39; artifact">
+    <property name="artifact.temp.output.java-instrumentation-tool:jar" value="${artifacts.temp.dir}/java_instrumentation_tool_jar"/>
+    <mkdir dir="${artifact.temp.output.java-instrumentation-tool:jar}"/>
+    <jar destfile="${temp.jar.path.java-instrumentation-tool.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain" manifest="${basedir}/src/META-INF/MANIFEST.MF">
+      <zipfileset dir="${java-instrumentation-tool.output.dir}"/>
+      <zipfileset src="${basedir}/lib/javassist.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.java-instrumentation-tool.jar}" tofile="${artifact.temp.output.java-instrumentation-tool:jar}/java-instrumentation-tool.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.java-instrumentation-tool:jar" description="Build all artifacts">
+    <mkdir dir="${artifact.output.java-instrumentation-tool:jar}"/>
+    <copy todir="${artifact.output.java-instrumentation-tool:jar}">
+      <fileset dir="${artifact.temp.output.java-instrumentation-tool:jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
